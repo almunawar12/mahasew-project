@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e9e7ee",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#002463",
+                        "secondary": "#904d00",
+                        "on-tertiary-container": "#5a8aff",
+                        "secondary-fixed-dim": "#ffb77d",
+                        "inverse-surface": "#2f3035",
+                        "surface-dim": "#dad9e0",
+                        "on-primary-fixed-variant": "#2a4386",
+                        "on-secondary-fixed-variant": "#6e3900",
+                        "inverse-primary": "#b3c5ff",
+                        "surface-tint": "#435b9f",
+                        "background": "#faf8ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#001139",
+                        "error-container": "#ffdad6",
+                        "outline": "#757682",
+                        "surface-variant": "#e3e2e8",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-bright": "#faf8ff",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#ffdcc3",
+                        "on-tertiary-fixed-variant": "#0040a2",
+                        "outline-variant": "#c5c6d2",
+                        "on-secondary-container": "#603100",
+                        "tertiary-fixed-dim": "#b2c5ff",
+                        "surface-container": "#efedf3",
+                        "inverse-on-surface": "#f1f0f6",
+                        "primary-container": "#002366",
+                        "surface-container-highest": "#e3e2e8",
+                        "on-background": "#1a1b20",
+                        "on-primary-container": "#758dd5",
+                        "tertiary-fixed": "#dae2ff",
+                        "on-tertiary-fixed": "#001848",
+                        "on-surface-variant": "#444650",
+                        "on-surface": "#1a1b20",
+                        "surface": "#faf8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#2f1500",
+                        "surface-container-low": "#f4f3f9",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "secondary-container": "#fd8b00",
+                        "primary": "#00113a",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#00174a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .auth-card-shadow {
+            box-shadow: 0 24px 48px -12px rgba(26, 27, 32, 0.08);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background font-body text-on-background min-h-screen flex flex-col items-center justify-center p-6 selection:bg-secondary-fixed">
+    <!-- Top Navigation Anchor (Manual suppression of full shell for focused journey) -->
+    <header class="w-full absolute top-0 flex justify-center items-center py-10">
+        <div class="flex items-center gap-3">
+            <div class="relative flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary-container text-4xl" data-icon="school"
+                    style="font-variation-settings: 'FILL' 1;">school</span>
+                <span
+                    class="material-symbols-outlined text-primary-container absolute -bottom-1 -right-1 text-lg bg-surface rounded-full p-0.5"
+                    data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight font-headline text-primary-container flex items-center">
+                Maha<span class="text-secondary-container">Sewa</span>
+            </h1>
+        </div>
+    </header>
+    <main class="w-full max-w-md mt-16">
+        <!-- Authentication Card -->
+        <div class="bg-surface-container-lowest auth-card-shadow rounded-xl p-8 md:p-10 transition-all duration-300">
+            <div class="mb-10 text-center">
+                <h2 class="font-headline text-2xl font-bold text-primary mb-2 tracking-tight">Selamat Datang Kembali
+                </h2>
+                <p class="text-on-surface-variant body-lg opacity-80">Masuk untuk melanjutkan ke portal akademik Anda
+                </p>
+            </div>
+            <form class="space-y-6">
+                <!-- Email Field -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold tracking-wide text-on-surface uppercase opacity-70"
+                        for="email">Email Kampus / Alumni</label>
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary-container transition-colors">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+                        </div>
+                        <input
+                            class="w-full pl-11 pr-4 py-3.5 bg-surface-container-highest border-none rounded-lg focus:ring-2 focus:ring-primary-fixed-dim focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-outline/60"
+                            id="email" placeholder="nama@kampus.ac.id" type="email" />
+                    </div>
+                </div>
+                <!-- Password Field -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label class="block text-sm font-semibold tracking-wide text-on-surface uppercase opacity-70"
+                            for="password">Kata Sandi</label>
+                        <a class="text-sm font-medium text-primary-container hover:text-secondary-container transition-colors"
+                            href="#">Lupa Kata Sandi?</a>
+                    </div>
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary-container transition-colors">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
+                        </div>
+                        <input
+                            class="w-full pl-11 pr-12 py-3.5 bg-surface-container-highest border-none rounded-lg focus:ring-2 focus:ring-primary-fixed-dim focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-outline/60"
+                            id="password" placeholder="••••••••" type="password" />
+                        <button
+                            class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-primary-container"
+                            type="button">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Remember Me -->
+                <div class="flex items-center space-x-2">
+                    <input
+                        class="w-5 h-5 rounded border-outline-variant text-primary-container focus:ring-primary-fixed-dim bg-surface-container-highest"
+                        id="remember" type="checkbox" />
+                    <label class="text-sm text-on-surface-variant" for="remember">Ingat saya di perangkat ini</label>
+                </div>
+                <!-- CTA Button -->
+                <button
+                    class="w-full bg-secondary-container text-white font-bold py-4 rounded-lg shadow-lg shadow-secondary-container/20 hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+                    type="submit">
+                    <span>Masuk</span>
+                    <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform"
+                        data-icon="arrow_forward">arrow_forward</span>
+                </button>
+            </form>
+            <!-- Social/Alumni Auth (Optional prestige addition) -->
+            <div class="mt-8 pt-8 border-t border-outline-variant/30 flex flex-col items-center gap-4">
+                <span class="text-xs font-label uppercase tracking-widest text-outline">Atau masuk dengan</span>
+                <div class="flex gap-4 w-full">
+                    <button
+                        class="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-surface-container rounded-lg border border-transparent hover:bg-surface-container-high transition-colors">
+                        <img alt="Google Logo" class="w-5 h-5"
+                            data-alt="Official Google logo with vibrant colors on a clean background for authentication"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlvoEg-FnSHuRBnvdkaepDdnETQMMTNSHo2dA7c62wSOkSPzQxf0jN1T-CQJSgj31R4VYBMgQLuJdhoFUa1r5ypRtWVqgvnMsnKAj6eBDmawtwLJ4JM6Pmw0I9J2gDx_EH6sW6NmamLm4KEnxxJ73NoPVJyw9MaKw1rawGqc4PhENGwvIN3_IglLWHya4AYcKujcHfrM118S2BurfBc1SjraBstpc4BV90E7fnOMi1q4DbdJ_a3-EGYMomG2cslPxajIJAU1xnaIZF" />
+                        <span class="text-sm font-medium text-on-surface">Akun Kampus</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Actions -->
+        <div class="mt-10 text-center space-y-4">
+            <p class="text-on-surface-variant">
+                Belum punya akun?
+                <a class="text-secondary font-bold hover:underline decoration-2 underline-offset-4 ml-1" href="#">Daftar
+                    sekarang</a>
+            </p>
+            <div class="flex items-center justify-center gap-6 pt-4">
+                <a class="text-xs font-label uppercase tracking-widest text-outline hover:text-primary transition-colors"
+                    href="#">Bantuan</a>
+                <a class="text-xs font-label uppercase tracking-widest text-outline hover:text-primary transition-colors"
+                    href="#">Privasi</a>
+                <a class="text-xs font-label uppercase tracking-widest text-outline hover:text-primary transition-colors"
+                    href="#">Syarat</a>
+            </div>
+        </div>
+    </main>
+    <!-- Background Decorative Elements -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] right-[-5%] w-96 h-96 rounded-full bg-primary-fixed-dim/10 blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[-5%] w-96 h-96 rounded-full bg-secondary-fixed/20 blur-[120px]"></div>
+    </div>
+</body>
+
+</html>

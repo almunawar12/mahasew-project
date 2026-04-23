@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00113a;
+  --color-primary-container: #002366;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #758dd5;
+  
+  --color-secondary: #904d00;
+  --color-secondary-container: #fd8b00;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #603100;
+
+  --color-tertiary: #001139;
+  --color-tertiary-container: #002463;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #5a8aff;
+
+  --color-background: #faf8ff;
+  --color-on-background: #1a1b20;
+
+  --color-surface: #faf8ff;
+  --color-surface-dim: #dad9e0;
+  --color-surface-bright: #faf8ff;
+  --color-surface-variant: #e3e2e8;
+  --color-on-surface: #1a1b20;
+  --color-on-surface-variant: #444650;
+
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f3f9;
+  --color-surface-container: #efedf3;
+  --color-surface-container-high: #e9e7ee;
+  --color-surface-container-highest: #e3e2e8;
+
+  --color-outline: #757682;
+  --color-outline-variant: #c5c6d2;
+
+  --color-primary-fixed-dim: #b3c5ff;
+  --color-secondary-fixed: #ffdcc3;
+
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
+
+  --radius-default: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+:root {
+  --background: #faf8ff;
+  --foreground: #1a1b20;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+.editorial-shadow {
+  box-shadow: 0 24px 40px -8px rgba(26, 27, 32, 0.04);
+}
+
+.glass-header {
+  background: rgba(250, 248, 255, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+.glass-nav {
+  background: rgba(250, 248, 255, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+.asymmetric-hero {
+  background: linear-gradient(135deg, #00113a 0%, #002366 100%);
+}
+
+.ghost-border {
+  border: 1px solid rgba(197, 198, 210, 0.15);
+}

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>MahaSewa - Temukan Proyek Sampingan Mahasiswa</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#904d00",
+                        "on-secondary-fixed-variant": "#6e3900",
+                        "on-secondary": "#ffffff",
+                        "background": "#faf8ff",
+                        "on-surface-variant": "#444650",
+                        "surface": "#faf8ff",
+                        "on-surface": "#1a1b20",
+                        "secondary-fixed-dim": "#ffb77d",
+                        "inverse-primary": "#b3c5ff",
+                        "tertiary-fixed-dim": "#b2c5ff",
+                        "on-tertiary-fixed-variant": "#0040a2",
+                        "surface-dim": "#dad9e0",
+                        "surface-container": "#efedf3",
+                        "on-tertiary-fixed": "#001848",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#002366",
+                        "on-secondary-container": "#603100",
+                        "on-primary-container": "#758dd5",
+                        "tertiary-container": "#002463",
+                        "on-background": "#1a1b20",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e3e2e8",
+                        "on-secondary-fixed": "#2f1500",
+                        "secondary-fixed": "#ffdcc3",
+                        "surface-container-high": "#e9e7ee",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "outline": "#757682",
+                        "inverse-surface": "#2f3035",
+                        "primary": "#00113a",
+                        "outline-variant": "#c5c6d2",
+                        "surface-tint": "#435b9f",
+                        "error": "#ba1a1a",
+                        "tertiary": "#001139",
+                        "on-tertiary-container": "#5a8aff",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "secondary-container": "#fd8b00",
+                        "surface-bright": "#faf8ff",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f1f0f6",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-variant": "#e3e2e8",
+                        "on-primary-fixed": "#00174a",
+                        "surface-container-low": "#f4f3f9",
+                        "on-primary-fixed-variant": "#2a4386",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#dae2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-nav {
+            background: rgba(250, 248, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .asymmetric-hero {
+            background: linear-gradient(135deg, #00113a 0%, #002366 100%);
+        }
+
+        .ghost-border {
+            border: 1px solid rgba(197, 198, 210, 0.15);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-background font-body selection:bg-secondary-container selection:text-on-secondary-container">
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 glass-nav shadow-sm px-8 h-20 flex justify-between items-center">
+        <div class="flex items-center gap-12">
+            <a class="text-2xl font-black tracking-tighter text-primary-container flex items-center gap-1" href="#">
+                Maha<span class="text-secondary-container">Sewa</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-primary-container font-extrabold border-b-2 border-secondary-container transition-colors duration-300 py-1"
+                    href="#">Cari Proyek</a>
+                <a class="text-on-surface-variant font-medium opacity-80 hover:text-secondary-container transition-colors duration-300 py-1"
+                    href="#">Posting Proyek</a>
+                <a class="text-on-surface-variant font-medium opacity-80 hover:text-secondary-container transition-colors duration-300 py-1"
+                    href="#">Dashboard Saya</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <button class="p-2 text-on-surface-variant hover:text-primary transition-transform active:scale-95">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
+                <div class="relative">
+                    <img alt="User profile"
+                        class="w-10 h-10 rounded-full object-cover border-2 border-surface-container-highest"
+                        data-alt="Close-up portrait of a young professional man with a friendly smile, clean indoor office lighting, high resolution"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdGfiIrA2VieIp2npXuP8XadiIeq64V5MmHJn81_rpr6dLPNln1MtJNGawGm7wK_0ixDbXxvGu7uDVQZ3VrH0QFnWCoqaYVbngImsxcuJGfqfxnM4MgZv5gLHlSownaUBnukMRfpMwRVxPSDae5hoqMJRafso8Pvoj7k5cqQG_BAWDBv4dbuECMm8ip8quAUtI4Efn2rnv8DSIKG_PPKZjruJaQcVtn7aop5V4xRGGJjUQSZD1Y_Ht57qWpfFPnuPpNIASo3sx-EW1" />
+                    <div
+                        class="absolute -bottom-1 -right-1 bg-primary text-white rounded-full p-0.5 flex items-center justify-center border-2 border-surface">
+                        <span class="material-symbols-outlined text-[12px]"
+                            style="font-variation-settings: 'FILL' 1;">verified</span>
+                    </div>
+                </div>
+                <div class="hidden lg:block">
+                    <p class="text-sm font-bold text-primary leading-tight">Budi Santoso</p>
+                    <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-semibold">Alumni
+                        Verified</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="asymmetric-hero relative overflow-hidden py-24 px-8 lg:px-24">
+            <div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
+                <img alt="Students collaborating" class="w-full h-full object-cover"
+                    data-alt="Abstract silhouettes of students working together in a modern library with large windows and soft afternoon sunlight"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-BILzuOJqrQ7QZtRkY0rlZhxDlqTl-JvuzN97CuepR_pxU7yKWiqsbJTSTkEYDiOYFm-erWIwoYALKlnvYg6vL77Jm1MtGVGtyBd0pnmz953lmMMmyT4jt3q293W1hr9gMj07Prk8cMGJoa004eFs3K7BT_sKq6vtP0ptOucd8omlEEuOzNSu1g8-A3aXo6TPwOacddvHAiuJ6BOMgTJkCdZkj5fbcWJBzcIk5PXm7bYWenGfQjQ-wlxgeto-GE-1bU03Zgd9-frS" />
+            </div>
+            <div class="relative z-10 max-w-4xl">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/10 text-secondary-container rounded-full mb-6">
+                    <span class="material-symbols-outlined text-sm"
+                        style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    <span class="text-[10px] font-bold tracking-widest uppercase">Trusted by 500+ Companies</span>
+                </div>
+                <h1
+                    class="font-headline text-5xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-8">
+                    Temukan Proyek <br />
+                    <span class="text-secondary-container">Sampingan</span> Pertama Kamu.
+                </h1>
+                <div class="relative max-w-2xl mt-12">
+                    <div class="flex items-center bg-surface-container-lowest p-2 rounded-xl shadow-2xl">
+                        <span class="material-symbols-outlined text-outline ml-4">search</span>
+                        <input
+                            class="w-full bg-transparent border-none focus:ring-0 text-on-surface px-4 py-4 font-medium placeholder:text-outline-variant"
+                            placeholder="Cari skill, proyek, atau instansi..." type="text" />
+                        <button
+                            class="bg-secondary-container text-white px-8 py-4 rounded-lg font-bold hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-secondary-container/20">
+                            Cari
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <span class="text-white/60 text-sm font-medium">Populer:</span>
+                        <a class="text-white/90 text-sm font-medium hover:text-secondary-container underline underline-offset-4 decoration-white/20"
+                            href="#">UI Design</a>
+                        <a class="text-white/90 text-sm font-medium hover:text-secondary-container underline underline-offset-4 decoration-white/20"
+                            href="#">React Native</a>
+                        <a class="text-white/90 text-sm font-medium hover:text-secondary-container underline underline-offset-4 decoration-white/20"
+                            href="#">Data Entry</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Filter & Grid Section -->
+        <section class="max-w-[1440px] mx-auto px-8 py-16">
+            <!-- Filter Bar -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
+                <div class="flex flex-wrap gap-4">
+                    <div class="relative group">
+                        <label
+                            class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1">Kategori</label>
+                        <select
+                            class="appearance-none bg-surface-container-high ghost-border px-6 py-3 pr-12 rounded-lg text-on-surface font-semibold focus:bg-surface-container-lowest transition-all focus:ring-2 focus:ring-primary/10 outline-none">
+                            <option>Web Development</option>
+                            <option>Mobile Apps</option>
+                            <option>Data Science</option>
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-4 bottom-3.5 pointer-events-none text-outline text-sm">expand_more</span>
+                    </div>
+                    <div class="relative group">
+                        <label
+                            class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1">Budget</label>
+                        <select
+                            class="appearance-none bg-surface-container-high ghost-border px-6 py-3 pr-12 rounded-lg text-on-surface font-semibold focus:bg-surface-container-lowest transition-all focus:ring-2 focus:ring-primary/10 outline-none">
+                            <option>Semua Budget</option>
+                            <option>Dibawah Rp 1jt</option>
+                            <option>Rp 1jt - Rp 5jt</option>
+                            <option>Diatas Rp 5jt</option>
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-4 bottom-3.5 pointer-events-none text-outline text-sm">expand_more</span>
+                    </div>
+                    <div class="relative group">
+                        <label
+                            class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1">Skill</label>
+                        <select
+                            class="appearance-none bg-surface-container-high ghost-border px-6 py-3 pr-12 rounded-lg text-on-surface font-semibold focus:bg-surface-container-lowest transition-all focus:ring-2 focus:ring-primary/10 outline-none">
+                            <option>JavaScript</option>
+                            <option>Python</option>
+                            <option>Figma</option>
+                            <option>Writing</option>
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-4 bottom-3.5 pointer-events-none text-outline text-sm">expand_more</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-on-surface-variant text-sm font-medium">Menampilkan <span
+                            class="text-primary font-bold">124 Proyek</span> Tersedia</p>
+                </div>
+            </div>
+            <!-- Bento-Style Project Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 (Featured) -->
+                <div
+                    class="lg:col-span-2 bg-surface-container-low rounded-xl p-8 hover:bg-surface-container-high transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8">
+                        <span
+                            class="bg-secondary-container/10 text-secondary text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">Premium
+                            Project</span>
+                    </div>
+                    <div class="flex flex-col h-full">
+                        <div class="mb-8">
+                            <div class="flex items-center gap-3 mb-4">
+                                <img alt="University Logo" class="w-12 h-12 rounded-lg object-contain bg-white p-2"
+                                    data-alt="Minimalist modern university emblem with heraldic shield and book icon in deep blue"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXP_EJbDSl6K2RSbmcnfSnUTDzH332_VkwlW1EMRUwqGiq2deaJ1ry4he164tKLgkvmtXXh3BD_04kU6wwE-tSzpdyRtzNgtPIchyyMiaGGgmCbZSLjCAHIc1aBl_cfXSsTF8XvV6ZEjJp1VBg8bye1Rq0vG3Li44fx6aocj60POSXewY2F9e3ZUwQMzIR_-U-ozgr9WpoEoe72dXSNAbyMKcMBIldqdOm89j-F4NOnT9DlMZMn_lpDr8Uf9v9t7m4S0YFx2_SHK-8" />
+                                <div>
+                                    <h4 class="font-bold text-primary leading-tight">Ahmad Sudirman</h4>
+                                    <p class="text-xs text-on-surface-variant">Universitas Indonesia</p>
+                                </div>
+                            </div>
+                            <h3
+                                class="font-headline text-3xl font-extrabold text-primary-container group-hover:text-secondary-container transition-colors duration-300">
+                                Build a Landing Page for Research Lab</h3>
+                        </div>
+                        <div class="mt-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <div>
+                                <p class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Budget</p>
+                                <p class="font-bold text-primary">Rp 2.500.000</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Deadline
+                                </p>
+                                <p class="font-bold text-primary">14 Days</p>
+                            </div>
+                            <div class="col-span-2">
+                                <p class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Skills</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        class="bg-surface-container-highest text-[10px] font-bold px-3 py-1 rounded-full text-on-surface-variant">React</span>
+                                    <span
+                                        class="bg-surface-container-highest text-[10px] font-bold px-3 py-1 rounded-full text-on-surface-variant">NextJS</span>
+                                    <span
+                                        class="bg-surface-container-highest text-[10px] font-bold px-3 py-1 rounded-full text-on-surface-variant">Node.js</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div
+                    class="bg-surface-container-low rounded-xl p-8 hover:bg-surface-container-high transition-all group border border-transparent hover:border-secondary-container/20">
+                    <div class="flex flex-col h-full">
+                        <div class="mb-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <img alt="University Logo" class="w-10 h-10 rounded-lg object-contain bg-white p-2"
+                                    data-alt="Modern geometric emblem for an institute of technology in orange and grey"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-D9JEmzZ73ELJO6J7fvs6WE-sI1te03ykxpeoB-ns7TPrP-mjNHtlN5jCzE99OAKoJT2Mpu2Ec-6oAj_OihWpQDeXq43fwpBTVuK9gftEFnsDSrkTqDTUSxNWt4bq5d6CTk1mwh7DXNUCTOcsX9EZUcRAA151fiXL3q-Zo12Klmm9iTnFLkWox7RKDKudJebcchZhAMpW_mEoiIIRNTztiU9mgNUG9wsAjl2oY8_MpXJzhmpmnfvobcfD9EzrqAD6wUz5RS5Muf6e" />
+                                <div>
+                                    <h4 class="font-bold text-primary text-sm">Dian Wijaya</h4>
+                                    <p class="text-[10px] text-on-surface-variant">ITB Bandung</p>
+                                </div>
+                            </div>
+                            <h3 class="font-headline text-xl font-bold text-primary-container leading-snug">Design
+                                Social Media Content for Startup</h3>
+                        </div>
+                        <div class="space-y-4 mt-auto">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Budget
+                                    </p>
+                                    <p class="font-bold text-primary">Rp 1.200.000</p>
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1 text-right">
+                                        Deadline</p>
+                                    <p class="font-bold text-primary text-right">7 Days</p>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-outline-variant/20">
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        class="bg-surface-variant text-[10px] font-bold px-2 py-1 rounded-md text-on-surface-variant">Figma</span>
+                                    <span
+                                        class="bg-surface-variant text-[10px] font-bold px-2 py-1 rounded-md text-on-surface-variant">Canva</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div
+                    class="bg-surface-container-low rounded-xl p-8 hover:bg-surface-container-high transition-all group">
+                    <div class="flex flex-col h-full">
+                        <div class="mb-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <img alt="User profile" class="w-10 h-10 rounded-lg object-cover"
+                                    data-alt="Portrait of a female student researcher in a bright, modern laboratory setting"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVKoVgH5wH1RGMbwLy_COfv5BV5fNueFvjxo4C1bY14jeoQFaGlzfsM3NuOWbwZYXv_Ze3hm03G9TflrhMe3GK95_iDH877KA2wo5K7GSh2MFqZ5sKbDVXWe38CgMHkjaAO2-iMbwRy-uBso9OuTVboTnPT6UjU5UfjGqnPVxcPk77AUYeVLCiR8oeeUwE55iO5Y9Hd_EzZ2E_gu-eSbWRt8vPcqthloqs9cCpDeGXhD1wZ45jAD8l8j7l8-TlvwI1SYpkb4B_dfsC" />
+                                <div>
+                                    <h4 class="font-bold text-primary text-sm">Siti Aminah</h4>
+                                    <p class="text-[10px] text-on-surface-variant">UGM Yogyakarta</p>
+                                </div>
+                            </div>
+                            <h3 class="font-headline text-xl font-bold text-primary-container leading-snug">Data
+                                Cleaning &amp; Visualization Project</h3>
+                        </div>
+                        <div class="space-y-4 mt-auto">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Budget
+                                    </p>
+                                    <p class="font-bold text-primary">Rp 800.000</p>
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1 text-right">
+                                        Deadline</p>
+                                    <p class="font-bold text-primary text-right">5 Days</p>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-outline-variant/20">
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        class="bg-surface-variant text-[10px] font-bold px-2 py-1 rounded-md text-on-surface-variant">Python</span>
+                                    <span
+                                        class="bg-surface-variant text-[10px] font-bold px-2 py-1 rounded-md text-on-surface-variant">Excel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div
+                    class="bg-surface-container-low rounded-xl p-8 hover:bg-surface-container-high transition-all group">
+                    <div class="flex flex-col h-full">
+                        <div class="mb-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <img alt="User profile" class="w-10 h-10 rounded-lg object-cover"
+                                    data-alt="Professional profile photo of a smiling woman in business attire with soft natural lighting"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMdPtAXw-Yjn1xHr4ZueqSfGgqjl4dcTzvgaOv0LYpS_HMLtHL2iWSeYkbxOQ-eYdGscKpc8HrJ2QQg4AuRgvQp17L5LTgfSmIyObnRFIlaAQvdBVGBAP1WpjDWsOMNFuAH27eNiwZ6BGk_aWgAhoVzqLGTp_e5duGG7IyuLAP8NLAluVNTHCVQnSDbaR70HlqHo6v88gPCqSiXk9_CHaqp8tCMXmbja3ydSF0Ff7UsJyQKl7-44wtC_v6skXR4mhhRbdymtSJiOi5" />
+                                <div>
+                                    <h4 class="font-bold text-primary text-sm">Rini Astuti</h4>
+                                    <p class="text-[10px] text-on-surface-variant">BINUS University</p>
+                                </div>
+                            </div>
+                            <h3 class="font-headline text-xl font-bold text-primary-container leading-snug">Mobile App
+                                Bug Fixing (Flutter)</h3>
+                        </div>
+                        <div class="space-y-4 mt-auto">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1">Budget
+                                    </p>
+                                    <p class="font-bold text-primary">Rp 1.500.000</p>
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-[10px] uppercase font-bold tracking-widest text-outline mb-1 text-right">
+                                        Deadline</p>
+                                    <p class="font-bold text-primary text-right">10 Days</p>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-outline-variant/20">
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        class="bg-surface-variant text-[10px] font-bold px-2 py-1 rounded-md text-on-surface-variant">Flutter</span>
+                                    <span
+                                        class="bg-surface-variant text-[10px] font-bold px-2 py-1 rounded-md text-on-surface-variant">Firebase</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 (Secondary Highlight) -->
+                <div class="bg-primary-container rounded-xl p-8 hover:brightness-110 transition-all group relative">
+                    <div class="flex flex-col h-full text-white">
+                        <div class="mb-6">
+                            <span
+                                class="bg-white/10 text-white/90 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">Flash
+                                Project</span>
+                            <h3 class="font-headline text-2xl font-extrabold leading-tight mt-4">Technical Writing for
+                                Tech Blog</h3>
+                        </div>
+                        <p class="text-on-primary-container text-sm line-clamp-2 mb-6">Mencari penulis konten untuk
+                            artikel mingguan mengenai perkembangan AI di Indonesia.</p>
+                        <div class="mt-auto space-y-4">
+                            <div class="flex justify-between items-center">
+                                <p class="text-xl font-black text-secondary-container">Rp 500.000 <span
+                                        class="text-xs font-normal text-white/60">/ artikel</span></p>
+                                <span class="material-symbols-outlined text-secondary-container">bolt</span>
+                            </div>
+                            <button
+                                class="w-full bg-secondary-container py-3 rounded-lg font-bold text-white shadow-lg shadow-black/20 hover:scale-[1.02] active:scale-95 transition-all">Apply
+                                Fast</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- View More -->
+            <div class="flex justify-center mt-20">
+                <button class="flex items-center gap-3 group">
+                    <span
+                        class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center group-hover:bg-primary transition-all">
+                        <span
+                            class="material-symbols-outlined group-hover:text-white transition-colors">keyboard_arrow_down</span>
+                    </span>
+                    <span class="font-bold text-primary tracking-tight">Lihat Lebih Banyak Proyek</span>
+                </button>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-20 px-8">
+        <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="md:col-span-1">
+                <a class="text-3xl font-black tracking-tighter text-white mb-6 block" href="#">
+                    Maha<span class="text-secondary-container">Sewa</span>
+                </a>
+                <p class="text-on-primary-container text-sm leading-relaxed max-w-xs">
+                    Platform kolaborasi prestisius untuk mahasiswa berbakat dan alumni profesional di seluruh Indonesia.
+                </p>
+            </div>
+            <div>
+                <h5 class="font-bold text-white mb-6 uppercase tracking-widest text-xs">Navigasi</h5>
+                <ul class="space-y-4 text-on-primary-container text-sm font-medium">
+                    <li><a class="hover:text-white transition-colors" href="#">Cari Proyek</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Posting Proyek</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Dashboard Saya</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-bold text-white mb-6 uppercase tracking-widest text-xs">Dukungan</h5>
+                <ul class="space-y-4 text-on-primary-container text-sm font-medium">
+                    <li><a class="hover:text-white transition-colors" href="#">Pusat Bantuan</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Syarat &amp; Ketentuan</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-bold text-white mb-6 uppercase tracking-widest text-xs">Berlangganan</h5>
+                <div class="flex bg-white/10 rounded-lg p-1">
+                    <input
+                        class="bg-transparent border-none focus:ring-0 text-white text-sm px-4 w-full placeholder:text-white/30"
+                        placeholder="Email kamu..." type="email" />
+                    <button class="bg-secondary-container p-2 rounded-md hover:brightness-110 transition-all">
+                        <span class="material-symbols-outlined text-white">send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div
+            class="max-w-[1440px] mx-auto mt-20 pt-8 border-t border-white/10 flex flex-col md:row justify-between items-center gap-4">
+            <p class="text-on-primary-container text-[10px] font-bold tracking-widest uppercase">© 2024 MahaSewa
+                Indonesia. All Rights Reserved.</p>
+            <div class="flex gap-6">
+                <a class="text-on-primary-container hover:text-white transition-colors" href="#"><span
+                        class="material-symbols-outlined text-xl">social_leaderboard</span></a>
+                <a class="text-on-primary-container hover:text-white transition-colors" href="#"><span
+                        class="material-symbols-outlined text-xl">camera</span></a>
+                <a class="text-on-primary-container hover:text-white transition-colors" href="#"><span
+                        class="material-symbols-outlined text-xl">share</span></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

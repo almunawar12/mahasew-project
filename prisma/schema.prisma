@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  OWNER
+}
+
+enum ProjectStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum BidStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  role           UserRole  @default(USER)
+  isVerified     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts        Account[]
+  sessions        Session[]
+  profile         Profile?
+  projects        Project[] @relation("ClientProjects")
+  bids            Bid[]
+  reviewsSent     Review[]  @relation("ReviewsSent")
+  reviewsReceived Review[]  @relation("ReviewsReceived")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Profile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  fullName     String?
+  bio          String?
+  avatarUrl    String?
+  university   String?
+  phoneNumber  String?
+  skills       String[] @default([])
+  portfolioUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  budget      Float
+  budgetType  String?       @default("FIXED")
+  skills      String[]      @default([])
+  status      ProjectStatus @default(OPEN)
+  deadline    DateTime?
+
+  clientId String
+  client   User   @relation("ClientProjects", fields: [clientId], references: [id])
+
+  bids    Bid[]
+  reviews Review[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Bid {
+  id      String    @id @default(cuid())
+  amount  Float
+  message String
+  status  BidStatus @default(PENDING)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id      String  @id @default(cuid())
+  rating  Int     @default(5)
+  comment String?
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  fromId   String
+  fromUser User   @relation("ReviewsSent", fields: [fromId], references: [id])
+
+  toId   String
+  toUser User   @relation("ReviewsReceived", fields: [toId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
