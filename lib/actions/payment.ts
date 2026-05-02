@@ -15,12 +15,12 @@ export async function getPaymentByProject(projectId: string) {
 
   const project = await prisma.project.findUnique({
     where: { id: projectId },
-    include: { payment: { include: { bid: { include: { user: true } } } } },
+    include: { payments: { include: { bid: { include: { user: true } } } } },
   });
   if (!project) throw new Error("Project not found");
 
   const isOwner = project.clientId === session.user.id;
-  const isFreelancer = project.payment?.bid?.userId === session.user.id;
+  const isFreelancer = project.payments.some((p) => p.bid?.userId === session.user.id);
   const isAdmin = session.user.role === "ADMIN";
   if (!isOwner && !isFreelancer && !isAdmin) throw new Error("Forbidden");
 
