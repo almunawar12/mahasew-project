@@ -10,6 +10,7 @@ import { Button } from "@/components/atoms/Button";
 import { ApplyButton } from "@/components/organisms/ApplyButton";
 import Link from "next/link";
 import { auth } from "@/auth";
+import prisma from "@/lib/prismadb";
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -25,6 +26,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     : null;
 
   const hasApplied = project.bids.some(bid => bid.userId === session?.user?.id);
+
+  let isVerified = false;
+  if (session?.user?.id && session.user.role === "USER") {
+    const profile = await prisma.profile.findUnique({
+      where: { userId: session.user.id },
+      select: { verificationStatus: true },
+    });
+    isVerified = profile?.verificationStatus === "VERIFIED";
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-surface">
@@ -113,7 +123,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   </div>
                   
                   {session?.user?.role === "USER" ? (
-                    <ApplyButton projectId={project.id} defaultBudget={project.budget} hasApplied={hasApplied} />
+                    <ApplyButton projectId={project.id} defaultBudget={project.budget} hasApplied={hasApplied} isVerified={isVerified} />
                   ) : session?.user?.role === "OWNER" ? (
                     <div className="bg-white/10 rounded-xl p-4 text-center">
                         <p className="text-sm font-medium">Anda adalah pemilik proyek ini</p>

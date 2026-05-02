@@ -121,26 +121,57 @@ export async function updateBidStatus(bidId: string, status: "ACCEPTED" | "REJEC
     throw new Error("Unauthorized");
   }
 
-  // Ensure the bid belongs to a project owned by this user
   const bid = await prisma.bid.findUnique({
     where: { id: bidId },
-    include: {
-      project: true
-    }
+    include: { project: { include: { payment: true } } }
   });
 
   if (!bid || bid.project.clientId !== session.user.id) {
     throw new Error("Unauthorized or bid not found");
   }
 
-  await prisma.bid.update({
-    where: { id: bidId },
-    data: { status }
+  if (status === "REJECTED") {
+    await prisma.bid.update({ where: { id: bidId }, data: { status } });
+    revalidatePath("/dashboard/applicants");
+    revalidatePath("/dashboard");
+    return { success: true };
+  }
+
+  if (bid.project.payment) {
+    throw new Error("Proyek sudah memiliki bid yang diterima.");
+  }
+
+  const settings = await prisma.platformSettings.upsert({
+    where: { id: "singleton" },
+    create: { id: "singleton" },
+    update: {},
   });
+  const platformCut = (bid.amount * settings.commissionPct) / 100;
+  const freelancerCut = bid.amount - platformCut;
+
+  await prisma.$transaction([
+    prisma.bid.update({ where: { id: bidId }, data: { status: "ACCEPTED" } }),
+    prisma.bid.updateMany({
+      where: { projectId: bid.projectId, id: { not: bidId }, status: "PENDING" },
+      data: { status: "REJECTED" },
+    }),
+    prisma.payment.create({
+      data: {
+        projectId: bid.projectId,
+        bidId: bid.id,
+        amount: bid.amount,
+        commissionPct: settings.commissionPct,
+        platformCut,
+        freelancerCut,
+        status: "AWAITING_PROOF",
+      },
+    }),
+  ]);
 
   revalidatePath("/dashboard/applicants");
   revalidatePath("/dashboard");
-  
+  revalidatePath("/dashboard/manage-projects");
+
   return { success: true };
 }
 
@@ -189,6 +220,15 @@ export async function applyForProject(projectId: string, data: { amount: number;
 
   if (!session || session.user?.role !== "USER") {
     throw new Error("Unauthorized: Only Students can apply for projects.");
+  }
+
+  const profile = await prisma.profile.findUnique({
+    where: { userId: session.user.id! },
+    select: { verificationStatus: true },
+  });
+
+  if (profile?.verificationStatus !== "VERIFIED") {
+    throw new Error("Akun belum terverifikasi. Lengkapi verifikasi mahasiswa dulu.");
   }
 
   const existingBid = await prisma.bid.findFirst({

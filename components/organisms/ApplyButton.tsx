@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/atoms/Button";
 import { applyForProject } from "@/lib/actions/project";
 import { Icon } from "@/components/atoms/Icon";
@@ -10,9 +11,10 @@ interface ApplyButtonProps {
   projectId: string;
   defaultBudget: number;
   hasApplied?: boolean;
+  isVerified?: boolean;
 }
 
-export const ApplyButton: React.FC<ApplyButtonProps> = ({ projectId, defaultBudget, hasApplied }) => {
+export const ApplyButton: React.FC<ApplyButtonProps> = ({ projectId, defaultBudget, hasApplied, isVerified }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -39,6 +41,21 @@ export const ApplyButton: React.FC<ApplyButtonProps> = ({ projectId, defaultBudg
       setLoading(false);
     }
   };
+
+  if (!isVerified) {
+    return (
+      <Link href="/dashboard/verification" className="block">
+        <Button
+          variant="on-primary"
+          size="lg"
+          className="w-full text-base py-6 rounded-2xl bg-yellow-500 border-none"
+        >
+          <Icon name="verified_user" className="text-white" />
+          Verifikasi KTM Dulu
+        </Button>
+      </Link>
+    );
+  }
 
   if (localHasApplied) {
     return (

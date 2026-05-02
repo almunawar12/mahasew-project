@@ -87,6 +87,11 @@ export default async function MyApplicationsPage() {
                 </div>
 
                 <div className="flex gap-2 w-full md:w-auto shrink-0">
+                  <Link href={`/dashboard/my-applications/${app.id}`} className="flex-grow md:flex-grow-0">
+                    <button className="w-full px-6 py-2.5 rounded-xl bg-primary text-white font-bold hover:brightness-110 transition-all text-sm">
+                      Detail Kontrak
+                    </button>
+                  </Link>
                   <Link href={`/proyek/${app.projectId}`} className="flex-grow md:flex-grow-0">
                     <button className="w-full px-6 py-2.5 rounded-xl border border-primary text-primary font-bold hover:bg-primary/5 transition-all text-sm">
                       Lihat Proyek

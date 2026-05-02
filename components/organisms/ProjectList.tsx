@@ -85,9 +85,23 @@ export const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
           </div>
           
           <div className="flex items-center gap-2">
-            <Link 
-              href={`/dashboard/manage-projects/edit/${project.id}`} 
-              className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-all" 
+            <Link
+              href={`/dashboard/manage-projects/${project.id}/payment`}
+              className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-all"
+              title="Pembayaran"
+            >
+              <Icon name="payments" />
+            </Link>
+            <Link
+              href={`/dashboard/manage-projects/${project.id}/deliverables`}
+              className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-all"
+              title="Hasil Kerja"
+            >
+              <Icon name="folder_open" />
+            </Link>
+            <Link
+              href={`/dashboard/manage-projects/edit/${project.id}`}
+              className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-all"
               title="Edit"
             >
               <Icon name="edit" />

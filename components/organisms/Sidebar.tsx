@@ -24,6 +24,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ role, userName, userImage, isV
     { name: "Ringkasan", icon: "dashboard", href: "/dashboard" },
     { name: "Cari Proyek", icon: "search", href: "/cari-proyek" },
     { name: "Lamaran Saya", icon: "work", href: "/dashboard/my-applications" },
+    { name: "Verifikasi", icon: "verified_user", href: "/dashboard/verification" },
     { name: "Profil Saya", icon: "person", href: "/dashboard/profile" },
   ];
 
@@ -38,8 +39,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ role, userName, userImage, isV
   const adminMenuItems = [
     { name: "Admin Home", icon: "admin_panel_settings", href: "/admin" },
     { name: "User Management", icon: "group", href: "/admin/users" },
-    { name: "Moderasi Proyek", icon: "verified", href: "/admin/moderation" },
-    { name: "Statistik", icon: "monitoring", href: "/admin/stats" },
+    { name: "Verifikasi KTM", icon: "verified_user", href: "/admin/verifications" },
+    { name: "Pembayaran", icon: "payments", href: "/admin/payments" },
+    { name: "Moderasi Proyek", icon: "shield", href: "/admin/moderation" },
+    { name: "Pengaturan", icon: "settings", href: "/admin/settings" },
   ];
 
   const menuItems = 

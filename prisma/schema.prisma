@@ -27,6 +27,30 @@ enum BidStatus {
   REJECTED
 }
 
+enum VerificationStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum PaymentStatus {
+  AWAITING_PROOF
+  AWAITING_VERIFICATION
+  FUNDED
+  RELEASED
+  REFUNDED
+  REJECTED
+}
+
+enum ContractStatus {
+  NONE
+  ACTIVE
+  DELIVERED
+  COMPLETED
+  DISPUTED
+}
+
 model User {
   id             String    @id @default(cuid())
   name           String?
@@ -39,13 +63,14 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  accounts        Account[]
-  sessions        Session[]
-  profile         Profile?
-  projects        Project[] @relation("ClientProjects")
-  bids            Bid[]
-  reviewsSent     Review[]  @relation("ReviewsSent")
-  reviewsReceived Review[]  @relation("ReviewsReceived")
+  accounts          Account[]
+  sessions          Session[]
+  profile           Profile?
+  projects          Project[] @relation("ClientProjects")
+  bids              Bid[]
+  reviewsSent       Review[]  @relation("ReviewsSent")
+  reviewsReceived   Review[]  @relation("ReviewsReceived")
+  paymentsVerified  Payment[] @relation("PaymentsVerified")
 }
 
 model Account {
@@ -100,6 +125,10 @@ model Profile {
   skills       String[] @default([])
   portfolioUrl String?
 
+  ktmUrl             String?
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  verificationNote   String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -119,16 +148,18 @@ model Project {
 
   bids    Bid[]
   reviews Review[]
+  payment Payment?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Bid {
-  id      String    @id @default(cuid())
-  amount  Float
-  message String
-  status  BidStatus @default(PENDING)
+  id             String         @id @default(cuid())
+  amount         Float
+  message        String
+  status         BidStatus      @default(PENDING)
+  contractStatus ContractStatus @default(NONE)
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -136,8 +167,55 @@ model Bid {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
+  payment      Payment?
+  deliverables Deliverable[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Deliverable {
+  id       String   @id @default(cuid())
+  bidId    String
+  bid      Bid      @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  fileUrl  String
+  note     String?
+  approved Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  projectId      String        @unique
+  project        Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  bidId          String?       @unique
+  bid            Bid?          @relation(fields: [bidId], references: [id])
+
+  amount         Float
+  commissionPct  Float
+  freelancerCut  Float
+  platformCut    Float
+
+  proofUrl       String?
+  payoutProofUrl String?
+  status         PaymentStatus @default(AWAITING_PROOF)
+  notes          String?
+
+  verifiedById   String?
+  verifiedBy     User?         @relation("PaymentsVerified", fields: [verifiedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PlatformSettings {
+  id                String   @id @default("singleton")
+  commissionPct     Float    @default(10)
+  bankName          String?
+  bankAccountNumber String?
+  bankAccountName   String?
+  updatedAt         DateTime @updatedAt
 }
 
 model Review {
