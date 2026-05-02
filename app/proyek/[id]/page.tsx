@@ -62,17 +62,18 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 <h1 className="font-headline text-4xl md:text-5xl font-black text-primary leading-tight mb-8">
                   {project.title}
                 </h1>
-                <div className="flex items-center gap-6 p-6 bg-surface-container-low rounded-2xl border border-outline-variant/10">
-                  <img 
-                    src={project.client.image || "https://ui-avatars.com/api/?name=" + project.client.name} 
-                    alt={project.client.name || "Client"} 
+                <Link href={`/profil/${project.clientId}`} className="flex items-center gap-6 p-6 bg-surface-container-low rounded-2xl border border-outline-variant/10 hover:border-primary/30 transition-all">
+                  <img
+                    src={project.client.image || "https://ui-avatars.com/api/?name=" + project.client.name}
+                    alt={project.client.name || "Client"}
                     className="w-16 h-16 rounded-xl object-cover"
                   />
                   <div>
                     <h4 className="font-bold text-lg text-primary">{project.client.name}</h4>
                     <p className="text-on-surface-variant">{project.client.profile?.university || "MahaSewa Client"}</p>
                   </div>
-                </div>
+                  <Icon name="chevron_right" className="ml-auto text-outline" />
+                </Link>
               </header>
 
               <section className="space-y-6">

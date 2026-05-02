@@ -215,6 +215,7 @@ export async function releasePayout(paymentId: string, formData: FormData) {
 
   revalidatePath("/admin/payments");
   revalidatePath("/dashboard/my-applications");
+  revalidatePath(`/dashboard/my-applications/${payment.bidId}`);
   return { success: true };
 }
 

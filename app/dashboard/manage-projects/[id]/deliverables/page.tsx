@@ -7,6 +7,8 @@ import { Icon } from "@/components/atoms/Icon";
 import { formatFullDate, formatRupiah } from "@/lib/utils";
 import Link from "next/link";
 import { signOrNull, BUCKET_DELIVERABLE } from "@/lib/supabase";
+import { hasReviewedProject } from "@/lib/actions/review";
+import { ReviewForm } from "@/components/molecules/ReviewForm";
 
 export default async function ProjectDeliverablesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -93,9 +95,14 @@ export default async function ProjectDeliverablesPage({ params }: { params: Prom
           )}
 
           {acceptedBid.contractStatus === "COMPLETED" && (
-            <div className="bg-green-100 border border-green-300 rounded-2xl p-6">
-              <p className="text-green-900 font-bold">Proyek selesai. Admin akan meneruskan dana ke freelancer.</p>
-            </div>
+            <>
+              <div className="bg-green-100 border border-green-300 rounded-2xl p-6">
+                <p className="text-green-900 font-bold">Proyek selesai. Admin akan meneruskan dana ke freelancer.</p>
+              </div>
+              {!(await hasReviewedProject(acceptedBid.projectId)) && (
+                <ReviewForm projectId={acceptedBid.projectId} targetName={acceptedBid.user.name || "Freelancer"} />
+              )}
+            </>
           )}
         </>
       )}

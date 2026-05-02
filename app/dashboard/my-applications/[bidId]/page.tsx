@@ -6,7 +6,9 @@ import { DeliverableForm } from "@/components/molecules/DeliverableForm";
 import { Icon } from "@/components/atoms/Icon";
 import { formatRupiah, formatFullDate } from "@/lib/utils";
 import Link from "next/link";
-import { signOrNull, BUCKET_DELIVERABLE } from "@/lib/supabase";
+import { signOrNull, BUCKET_DELIVERABLE, BUCKET_PAYMENT } from "@/lib/supabase";
+import { hasReviewedProject } from "@/lib/actions/review";
+import { ReviewForm } from "@/components/molecules/ReviewForm";
 
 export default async function BidDetailPage({ params }: { params: Promise<{ bidId: string }> }) {
   const { bidId } = await params;
@@ -28,6 +30,8 @@ export default async function BidDetailPage({ params }: { params: Promise<{ bidI
   const deliverables = await Promise.all(
     bid.deliverables.map(async (d) => ({ ...d, signedUrl: await signOrNull(BUCKET_DELIVERABLE, d.fileUrl) }))
   );
+
+  const payoutSignedUrl = await signOrNull(BUCKET_PAYMENT, bid.payment?.payoutProofUrl);
 
   const contractLabels: Record<string, string> = {
     NONE: "Belum ada kontrak",
@@ -123,9 +127,30 @@ export default async function BidDetailPage({ params }: { params: Promise<{ bidI
       )}
 
       {bid.contractStatus === "COMPLETED" && (
-        <div className="bg-green-100 border border-green-300 rounded-2xl p-6">
-          <p className="text-green-900 font-bold">Proyek selesai. Pembayaran akan diteruskan oleh admin.</p>
-        </div>
+        <>
+          {bid.payment?.status === "RELEASED" ? (
+            <div className="bg-green-100 border border-green-300 rounded-2xl p-6 space-y-2">
+              <p className="text-green-900 font-bold flex items-center gap-2">
+                <Icon name="paid" /> Pembayaran telah diterima.
+              </p>
+              <p className="text-sm text-green-800">
+                Admin sudah meneruskan {formatRupiah(bid.payment.freelancerCut)} ke rekening Anda.
+              </p>
+              {payoutSignedUrl && (
+                <a href={payoutSignedUrl} target="_blank" rel="noreferrer" className="text-primary font-bold text-sm underline">
+                  Lihat bukti payout
+                </a>
+              )}
+            </div>
+          ) : (
+            <div className="bg-green-100 border border-green-300 rounded-2xl p-6">
+              <p className="text-green-900 font-bold">Proyek selesai. Pembayaran akan diteruskan oleh admin.</p>
+            </div>
+          )}
+          {!(await hasReviewedProject(bid.projectId)) && (
+            <ReviewForm projectId={bid.projectId} targetName={bid.project.client.name || "Klien"} />
+          )}
+        </>
       )}
     </div>
   );
