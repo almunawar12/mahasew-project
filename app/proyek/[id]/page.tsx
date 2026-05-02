@@ -4,6 +4,7 @@ import { Footer } from "@/components/organisms/Footer";
 import { getProjectById } from "@/lib/actions/project";
 import { notFound } from "next/navigation";
 import { formatRupiah, formatFullDate } from "@/lib/utils";
+export const dynamic = "force-dynamic";
 import { Badge } from "@/components/atoms/Badge";
 import { Icon } from "@/components/atoms/Icon";
 import { Button } from "@/components/atoms/Button";
@@ -152,6 +153,16 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-on-surface-variant">Jumlah Pelamar</span>
                       <span className="font-bold text-primary">{project.bids.length} Orang</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-on-surface-variant">Slot Freelancer</span>
+                      <span className="font-bold text-primary">
+                        {project.bids.filter(b => b.status === "ACCEPTED").length} / {project.maxFreelancers} terisi
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-on-surface-variant">Budget per Freelancer</span>
+                      <span className="font-bold text-primary">{formatRupiah(project.budget)}</span>
                     </div>
                   </div>
                 </div>

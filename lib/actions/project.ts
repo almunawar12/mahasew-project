@@ -13,12 +13,15 @@ export async function createProject(formData: {
   budgetType: string;
   skills: string[];
   deadline?: string;
+  maxFreelancers?: number;
 }) {
   const session = await auth();
 
   if (!session || session.user?.role !== "OWNER") {
     throw new Error("Unauthorized: Only Owners can post projects.");
   }
+
+  const slots = Math.max(1, Math.min(20, formData.maxFreelancers || 1));
 
   const project = await prisma.project.create({
     data: {
@@ -28,6 +31,7 @@ export async function createProject(formData: {
       budgetType: formData.budgetType,
       skills: formData.skills,
       deadline: formData.deadline ? new Date(formData.deadline) : null,
+      maxFreelancers: slots,
       clientId: session.user.id!,
       status: "OPEN",
     },
@@ -123,7 +127,13 @@ export async function updateBidStatus(bidId: string, status: "ACCEPTED" | "REJEC
 
   const bid = await prisma.bid.findUnique({
     where: { id: bidId },
-    include: { project: { include: { payment: true } } }
+    include: {
+      project: {
+        include: {
+          bids: { where: { status: "ACCEPTED" } },
+        },
+      },
+    },
   });
 
   if (!bid || bid.project.clientId !== session.user.id) {
@@ -137,8 +147,11 @@ export async function updateBidStatus(bidId: string, status: "ACCEPTED" | "REJEC
     return { success: true };
   }
 
-  if (bid.project.payment) {
-    throw new Error("Proyek sudah memiliki bid yang diterima.");
+  const acceptedCount = bid.project.bids.length;
+  const maxSlots = bid.project.maxFreelancers;
+
+  if (acceptedCount >= maxSlots) {
+    throw new Error(`Slot freelancer sudah penuh (${acceptedCount}/${maxSlots}).`);
   }
 
   const settings = await prisma.platformSettings.upsert({
@@ -149,12 +162,8 @@ export async function updateBidStatus(bidId: string, status: "ACCEPTED" | "REJEC
   const platformCut = (bid.amount * settings.commissionPct) / 100;
   const freelancerCut = bid.amount - platformCut;
 
-  await prisma.$transaction([
+  const ops: any[] = [
     prisma.bid.update({ where: { id: bidId }, data: { status: "ACCEPTED" } }),
-    prisma.bid.updateMany({
-      where: { projectId: bid.projectId, id: { not: bidId }, status: "PENDING" },
-      data: { status: "REJECTED" },
-    }),
     prisma.payment.create({
       data: {
         projectId: bid.projectId,
@@ -166,7 +175,19 @@ export async function updateBidStatus(bidId: string, status: "ACCEPTED" | "REJEC
         status: "AWAITING_PROOF",
       },
     }),
-  ]);
+  ];
+
+  const slotsLeft = maxSlots - (acceptedCount + 1);
+  if (slotsLeft <= 0) {
+    ops.push(
+      prisma.bid.updateMany({
+        where: { projectId: bid.projectId, id: { not: bidId }, status: "PENDING" },
+        data: { status: "REJECTED" },
+      })
+    );
+  }
+
+  await prisma.$transaction(ops);
 
   revalidatePath("/dashboard/applicants");
   revalidatePath("/dashboard");
@@ -240,6 +261,18 @@ export async function applyForProject(projectId: string, data: { amount: number;
 
   if (existingBid) {
     throw new Error("You have already applied for this project.");
+  }
+
+  const project = await prisma.project.findUnique({
+    where: { id: projectId },
+    select: { maxFreelancers: true, status: true, _count: { select: { bids: { where: { status: "ACCEPTED" } } } } },
+  });
+  if (!project) throw new Error("Project tidak ditemukan");
+  if (project.status !== "OPEN") {
+    throw new Error("Proyek tidak menerima lamaran lagi.");
+  }
+  if (project._count.bids >= project.maxFreelancers) {
+    throw new Error("Slot freelancer untuk proyek ini sudah penuh.");
   }
 
   const bid = await prisma.bid.create({

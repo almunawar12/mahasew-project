@@ -49,6 +49,7 @@ export default async function AdminPaymentsPage() {
                 freelancerName: p.bid?.user.name || "",
                 freelancerEmail: p.bid?.user.email || "",
                 contractStatus: p.bid?.contractStatus || "NONE",
+                freelancerProfile: p.bid?.user.profile || null,
               }}
             />
           ))}

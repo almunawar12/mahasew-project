@@ -32,6 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ role, userName, userImage, isV
     { name: "Ringkasan", icon: "dashboard", href: "/dashboard" },
     { name: "Proyek Aktif", icon: "work", href: "/dashboard/manage-projects" },
     { name: "Daftar Pelamar", icon: "people", href: "/dashboard/applicants" },
+    { name: "Profil Saya", icon: "person", href: "/dashboard/profile" },
     { name: "Manajemen Tim", icon: "group", href: "/dashboard/team" },
     { name: "Analitik", icon: "trending_up", href: "/dashboard/analytics" },
   ];

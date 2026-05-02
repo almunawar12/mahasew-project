@@ -129,26 +129,33 @@ model Profile {
   verificationStatus VerificationStatus @default(UNVERIFIED)
   verificationNote   String?
 
+  bankName          String?
+  bankAccountNumber String?
+  bankAccountName   String?
+  ewalletProvider   String?
+  ewalletNumber     String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Project {
-  id          String        @id @default(cuid())
-  title       String
-  description String
-  budget      Float
-  budgetType  String?       @default("FIXED")
-  skills      String[]      @default([])
-  status      ProjectStatus @default(OPEN)
-  deadline    DateTime?
+  id             String        @id @default(cuid())
+  title          String
+  description    String
+  budget         Float
+  budgetType     String?       @default("FIXED")
+  skills         String[]      @default([])
+  status         ProjectStatus @default(OPEN)
+  deadline       DateTime?
+  maxFreelancers Int           @default(1)
 
   clientId String
   client   User   @relation("ClientProjects", fields: [clientId], references: [id])
 
-  bids    Bid[]
-  reviews Review[]
-  payment Payment?
+  bids     Bid[]
+  reviews  Review[]
+  payments Payment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -187,7 +194,7 @@ model Deliverable {
 
 model Payment {
   id             String        @id @default(cuid())
-  projectId      String        @unique
+  projectId      String
   project        Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   bidId          String?       @unique
   bid            Bid?          @relation(fields: [bidId], references: [id])

@@ -16,6 +16,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
   const [skills, setSkills] = useState<string[]>(project?.skills || ["UI/UX Design", "Python"]);
   const [skillInput, setSkillInput] = useState("");
   const [budgetType, setBudgetType] = useState(project?.budgetType || "FIXED");
+  const [maxFreelancers, setMaxFreelancers] = useState<number>(project?.maxFreelancers || 1);
 
   const addSkill = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && skillInput.trim()) {
@@ -43,6 +44,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
       budgetType,
       skills,
       deadline: formData.get("deadline") as string,
+      maxFreelancers,
     };
 
     try {
@@ -204,6 +206,25 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
                   type="date"
                 />
               </div>
+            </div>
+
+            {/* Jumlah Freelancer */}
+            <div className="space-y-2">
+              <label className="block font-headline font-bold text-primary text-sm uppercase tracking-wider">
+                Jumlah Freelancer Dibutuhkan
+              </label>
+              <input
+                value={maxFreelancers}
+                onChange={(e) => setMaxFreelancers(Math.max(1, Math.min(20, Number(e.target.value) || 1)))}
+                min={1}
+                max={20}
+                className="w-full px-4 py-3 rounded-lg bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-fixed-dim"
+                type="number"
+                required
+              />
+              <p className="text-xs text-on-surface-variant">
+                Berapa freelancer yang akan dipekerjakan? Budget di atas adalah <strong>per freelancer</strong>.
+              </p>
             </div>
           </div>
 

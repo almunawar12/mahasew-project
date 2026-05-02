@@ -6,6 +6,15 @@ import { Icon } from "@/components/atoms/Icon";
 import { toast } from "sonner";
 import { formatRupiah } from "@/lib/utils";
 
+interface FreelancerProfile {
+  bankName: string | null;
+  bankAccountNumber: string | null;
+  bankAccountName: string | null;
+  ewalletProvider: string | null;
+  ewalletNumber: string | null;
+  phoneNumber: string | null;
+}
+
 interface Payment {
   id: string;
   amount: number;
@@ -22,6 +31,7 @@ interface Payment {
   freelancerName: string;
   freelancerEmail: string;
   contractStatus: string;
+  freelancerProfile?: FreelancerProfile | null;
 }
 
 export const PaymentReviewCard = ({ payment }: { payment: Payment }) => {
@@ -143,8 +153,34 @@ export const PaymentReviewCard = ({ payment }: { payment: Payment }) => {
       )}
 
       {canPayout && (
-        <div className="space-y-2 pt-2 border-t border-outline-variant/10">
+        <div className="space-y-3 pt-2 border-t border-outline-variant/10">
           <p className="text-sm font-bold text-on-surface">Project COMPLETED. Teruskan dana ke freelancer.</p>
+
+          {payment.freelancerProfile ? (
+            <div className="bg-surface-container-low rounded-xl p-4 text-sm space-y-1">
+              <p className="font-bold text-primary mb-1">Tujuan Transfer:</p>
+              {payment.freelancerProfile.bankAccountNumber ? (
+                <>
+                  <p><strong>Bank:</strong> {payment.freelancerProfile.bankName || "-"}</p>
+                  <p><strong>No. Rekening:</strong> {payment.freelancerProfile.bankAccountNumber}</p>
+                  <p><strong>Atas Nama:</strong> {payment.freelancerProfile.bankAccountName || "-"}</p>
+                </>
+              ) : payment.freelancerProfile.ewalletNumber ? (
+                <>
+                  <p><strong>E-Wallet:</strong> {payment.freelancerProfile.ewalletProvider || "-"}</p>
+                  <p><strong>No.:</strong> {payment.freelancerProfile.ewalletNumber}</p>
+                </>
+              ) : (
+                <p className="text-red-700 font-bold">Freelancer belum mengisi metode pembayaran.</p>
+              )}
+              {payment.freelancerProfile.phoneNumber && (
+                <p className="text-xs text-outline mt-1">HP: {payment.freelancerProfile.phoneNumber}</p>
+              )}
+            </div>
+          ) : (
+            <p className="text-red-700 font-bold text-sm">Freelancer belum mengisi profil pembayaran.</p>
+          )}
+
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp,application/pdf"

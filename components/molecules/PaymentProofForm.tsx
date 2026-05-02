@@ -5,7 +5,7 @@ import { uploadPaymentProof } from "@/lib/actions/payment";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export const PaymentProofForm = ({ projectId }: { projectId: string }) => {
+export const PaymentProofForm = ({ projectId, paymentId }: { projectId: string; paymentId: string }) => {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ export const PaymentProofForm = ({ projectId }: { projectId: string }) => {
     const fd = new FormData();
     fd.append("proof", file);
     try {
-      await uploadPaymentProof(projectId, fd);
+      await uploadPaymentProof(paymentId, projectId, fd);
       toast.success("Bukti dikirim. Menunggu verifikasi.");
       router.refresh();
     } catch (e: any) {

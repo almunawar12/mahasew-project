@@ -27,7 +27,7 @@ export async function getPaymentByProject(projectId: string) {
   return project;
 }
 
-export async function uploadPaymentProof(projectId: string, formData: FormData) {
+export async function uploadPaymentProof(paymentId: string, projectId: string, formData: FormData) {
   const session = await auth();
   if (!session || session.user?.role !== "OWNER") throw new Error("Unauthorized");
 
@@ -36,26 +36,26 @@ export async function uploadPaymentProof(projectId: string, formData: FormData) 
   if (file.size > MAX_SIZE) throw new Error("Ukuran maks 10MB.");
   if (!ALLOWED_PROOF.includes(file.type)) throw new Error("Format tidak didukung.");
 
-  const project = await prisma.project.findUnique({
-    where: { id: projectId },
-    include: { payment: true },
+  const payment = await prisma.payment.findUnique({
+    where: { id: paymentId },
+    include: { project: true },
   });
-  if (!project || project.clientId !== session.user.id) throw new Error("Forbidden");
-  if (!project.payment) throw new Error("Belum ada bid yang diterima untuk proyek ini.");
-  if (project.payment.status === "FUNDED" || project.payment.status === "RELEASED") {
+  if (!payment || payment.projectId !== projectId) throw new Error("Payment tidak ditemukan");
+  if (payment.project.clientId !== session.user.id) throw new Error("Forbidden");
+  if (payment.status === "FUNDED" || payment.status === "RELEASED") {
     throw new Error("Pembayaran sudah diverifikasi.");
   }
 
   const ext = file.name.split(".").pop() || "bin";
-  const path = `${projectId}/proof-${Date.now()}.${ext}`;
+  const path = `${projectId}/${paymentId}/proof-${Date.now()}.${ext}`;
   const url = await uploadToBucket(BUCKET_PAYMENT, path, file, file.type);
 
   await prisma.payment.update({
-    where: { projectId },
+    where: { id: paymentId },
     data: { proofUrl: url, status: "AWAITING_VERIFICATION", notes: null },
   });
 
-  revalidatePath(`/dashboard/manage-projects`);
+  revalidatePath(`/dashboard/manage-projects/${projectId}/payment`);
   revalidatePath(`/admin/payments`);
   return { success: true };
 }
@@ -68,7 +68,22 @@ export async function getPendingPayments() {
     where: { status: { in: ["AWAITING_VERIFICATION", "FUNDED", "RELEASED"] } },
     include: {
       project: { select: { id: true, title: true, clientId: true, client: { select: { name: true, email: true } } } },
-      bid: { include: { user: { select: { id: true, name: true, email: true } } } },
+      bid: {
+        include: {
+          user: {
+            select: {
+              id: true, name: true, email: true,
+              profile: {
+                select: {
+                  bankName: true, bankAccountNumber: true, bankAccountName: true,
+                  ewalletProvider: true, ewalletNumber: true,
+                  phoneNumber: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
     orderBy: { updatedAt: "desc" },
   });
@@ -93,8 +108,8 @@ export async function verifyPayment(paymentId: string) {
       where: { id: payment.bidId! },
       data: { contractStatus: "ACTIVE" },
     }),
-    prisma.project.update({
-      where: { id: payment.projectId },
+    prisma.project.updateMany({
+      where: { id: payment.projectId, status: "OPEN" },
       data: { status: "IN_PROGRESS" },
     }),
   ]);
@@ -171,17 +186,29 @@ export async function approveDeliverable(bidId: string) {
       where: { id: bidId },
       data: { contractStatus: "COMPLETED" },
     }),
-    prisma.project.update({
-      where: { id: bid.projectId },
-      data: { status: "COMPLETED" },
-    }),
     prisma.deliverable.updateMany({
       where: { bidId },
       data: { approved: true },
     }),
   ]);
 
+  const remaining = await prisma.bid.count({
+    where: {
+      projectId: bid.projectId,
+      status: "ACCEPTED",
+      contractStatus: { not: "COMPLETED" },
+    },
+  });
+
+  if (remaining === 0) {
+    await prisma.project.update({
+      where: { id: bid.projectId },
+      data: { status: "COMPLETED" },
+    });
+  }
+
   revalidatePath("/dashboard/manage-projects");
+  revalidatePath(`/dashboard/manage-projects/${bid.projectId}/deliverables`);
   revalidatePath("/admin/payments");
   return { success: true };
 }
